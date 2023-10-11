@@ -5,7 +5,6 @@ import uuid
 from typing import Any, Dict, Tuple
 
 import pandas as pd
-import numpy as np
 from config import paths
 from data_models.data_validator import validate_data
 from logger import get_logger, log_error
@@ -103,10 +102,7 @@ async def transform_req_data_and_make_predictions(
         data
     )
     class_names = model_resources.predictor_model.target_encoder.classes_
-    shape = (len(predictions_arr), len(class_names))
-    predictions_df = pd.DataFrame(np.zeros(shape), columns=class_names)
-    for idx, value in enumerate(predictions_arr):
-        predictions_df.iloc[idx, value] = 1
+    predictions_df = pd.DataFrame(predictions_arr, columns=class_names)
 
     predictions_df[model_resources.data_schema.id] = ids
 
